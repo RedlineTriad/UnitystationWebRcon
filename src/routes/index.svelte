@@ -17,7 +17,7 @@
     if (!selectedConnection) {
       connections.set([...connectionsValue, newConn]);
     }
-    goto("players");
+    goto(`${selectedValue}/players`);
   }
 </script>
 

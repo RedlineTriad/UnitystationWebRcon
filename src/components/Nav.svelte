@@ -1,5 +1,14 @@
+<script context="module">
+	export async function preload(page, session) {
+		return { path: page.path };
+	}
+</script>
+
 <script>
+	export let path;
 	export let segment;
+	//$: match = /(\d+)\/(\w+)/.exec(path);
+	$: console.log(path);
 </script>
 
 <style>
@@ -36,7 +45,7 @@
 		content: '';
 		width: calc(100% - 1em);
 		height: 2px;
-		background-color: rgb(255,62,0);
+		background-color: slateblue;
 		display: block;
 		bottom: -1px;
 	}
@@ -50,11 +59,7 @@
 
 <nav>
 	<ul>
-		<li><a class:selected='{segment === undefined}' href='.'>home</a></li>
-		<li><a class:selected='{segment === "about"}' href='about'>about</a></li>
-
-		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-		     the blog data when we hover over the link or tap it on a touchscreen -->
-		<li><a rel=prefetch class:selected='{segment === "blog"}' href='blog'>blog</a></li>
+		<li><a rel=prefetch class:selected='{segment === "players"}' href='${1}/players'>players</a></li>
+		<li><a rel=prefetch class:selected='{segment === "chat"}' href='${1}/chat'>chat</a></li>
 	</ul>
 </nav>
