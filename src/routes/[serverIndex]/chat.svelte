@@ -8,9 +8,8 @@
   import { connections } from "../../stores/connectionStore.js";
   import { generateWS } from "../../stores/socketStore.js";
   export let selectedValue;
-  let connectionsValue;
 
-  $: selectedConnection = connectionsValue[selectedValue];
+  $: selectedConnection = $connections[selectedValue];
   $: ws = generateWS(selectedConnection, "rconchat", {
         timeout: Infinity,
         maxAttempts: 10,
@@ -18,8 +17,6 @@
         onmessage: e => response = e.data
       });
   let response;
-
-  connections.subscribe(connections => connectionsValue = connections);
 </script>
 
 <svelte:head>

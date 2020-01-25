@@ -1,13 +1,8 @@
 <script>
   import { goto } from "@sapper/app";
   import { selected, connections } from "../stores/connectionStore.js";
-  let connectionsValue;
-  let selectedValue;
 
-  $: selectedConnection = connectionsValue[selectedValue];
-
-  connections.subscribe(connections => connectionsValue = connections);
-  selected.subscribe(selected => selectedValue = selected);
+  $: selectedConnection = $connections[$selected];
 
   function submit(event) {
     const newConn = {
@@ -15,15 +10,46 @@
       password: event.target.password.value
     };
     if (!selectedConnection) {
-      connections.set([...connectionsValue, newConn]);
+      connections.update(c => [...c, newConn]);
     }
-    goto(`${selectedValue}/players`);
+    goto(`${$selected}/players`);
   }
 </script>
 
 <svelte:head>
   <title>Unitystation RCON</title>
 </svelte:head>
+
+{#if process.browser}
+  <div class="form">
+    <h1>Connect</h1>
+    <form on:submit|preventDefault={submit}>
+      <select id="profile" bind:value={$selected}>
+        {#each $connections as conn, value}
+          <option {value}>{conn.url}</option>
+        {/each}
+        <option value={$connections.length + 1}>New...</option>
+      </select>
+      {#if selectedConnection == null}
+        <input type="text" id="url" placeholder="address:port" />
+        <input type="password" id="password" placeholder="password" />
+      {:else}
+        <input
+          type="text"
+          id="url"
+          placeholder="address:port"
+          bind:value={selectedConnection.url} />
+        <input
+          type="password"
+          id="password"
+          placeholder="password"
+          bind:value={selectedConnection.password} />
+      {/if}
+      <input type="submit" value="Connect" />
+    </form>
+  </div>
+{/if}
+
 
 <style>
   h1 {
@@ -70,33 +96,3 @@
     margin: 0 auto;
   }
 </style>
-
-{#if process.browser}
-  <div class="form">
-    <h1>Connect</h1>
-    <form on:submit|preventDefault={submit}>
-      <select id="profile" bind:value={$selected}>
-        {#each $connections as conn, value}
-          <option {value}>{conn.url}</option>
-        {/each}
-        <option value={$connections.length + 1}>New...</option>
-      </select>
-      {#if selectedConnection == null}
-        <input type="text" id="url" placeholder="address:port" />
-        <input type="password" id="password" placeholder="password" />
-      {:else}
-        <input
-          type="text"
-          id="url"
-          placeholder="address:port"
-          bind:value={selectedConnection.url} />
-        <input
-          type="password"
-          id="password"
-          placeholder="password"
-          bind:value={selectedConnection.password} />
-      {/if}
-      <input type="submit" value="Connect" />
-    </form>
-  </div>
-{/if}

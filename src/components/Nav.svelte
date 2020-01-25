@@ -1,19 +1,22 @@
-<script context="module">
-	export async function preload(page, session) {
-		return { path: page.path };
-	}
+<script>
+	import { stores } from '@sapper/app';
+	const { preloading, page, session } = stores();
+	export let segment;
+	$: match = /(\d+)\/(\w+)/.exec($page.path) || [];
+	$: path = match[1] || ''
 </script>
 
-<script>
-	export let path;
-	export let segment;
-	//$: match = /(\d+)\/(\w+)/.exec(path);
-	$: console.log(path);
-</script>
+<nav>
+	<ul>
+		<li><a rel=prefetch href='..'>&lt;</a></li>
+		<li><a rel=prefetch class:selected='{segment === "players"}' href='{path}/players'>players</a></li>
+		<li><a rel=prefetch class:selected='{segment === "chat"}' href='{path}/chat'>chat</a></li>
+	</ul>
+</nav>
 
 <style>
 	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
+		border-bottom: 1px solid rgba(0,62,255,.1);
 		font-weight: 300;
 		padding: 0 1em;
 	}
@@ -56,10 +59,3 @@
 		display: block;
 	}
 </style>
-
-<nav>
-	<ul>
-		<li><a rel=prefetch class:selected='{segment === "players"}' href='${1}/players'>players</a></li>
-		<li><a rel=prefetch class:selected='{segment === "chat"}' href='${1}/chat'>chat</a></li>
-	</ul>
-</nav>
