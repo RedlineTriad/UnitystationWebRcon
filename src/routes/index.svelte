@@ -14,6 +14,10 @@
     }
     goto(`${$selected}/players`);
   }
+
+  function deleteSelected(event){
+    connections.update(cs => cs.filter(c => c != $selected));
+  }
 </script>
 
 <svelte:head>
@@ -24,12 +28,15 @@
   <div class="form">
     <h1>Connect</h1>
     <form on:submit|preventDefault={submit}>
-      <select id="profile" bind:value={$selected}>
-        {#each $connections as conn, value}
-          <option {value}>{conn.url}</option>
-        {/each}
-        <option value={$connections.length + 1}>New...</option>
-      </select>
+      <div class="right">
+        <select id="profile" class="inline" bind:value={$selected}>
+          {#each $connections as conn, value}
+            <option {value}>{conn.url}</option>
+          {/each}
+          <option value={$connections.length + 1}>New...</option>
+        </select>
+        <button onclick={deleteSelected} class="inline">X</button>
+      </div>
       {#if selectedConnection == null}
         <input type="text" id="url" placeholder="address:port" />
         <input type="password" id="password" placeholder="password" />
@@ -57,38 +64,22 @@
     margin: 0 auto;
   }
 
-  input,
-  select,
-  option {
-    background: none;
-    color: lightslategrey;
-    font-size: 18px;
-    padding: 10px 10px 10px 5px;
-    margin: 1em auto;
-    display: block;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid slateblue;
-  }
-  input:focus {
-    outline: 0;
-  }
-  select:focus {
-    outline: 0;
-  }
-
-  input[type="submit"] {
-    border: 1px solid slateblue;
-    color: slateblue;
-  }
-
   input {
     width: 100%;
   }
 
   select {
-    margin-right: 0;
     width: 50%;
+    margin-left: 8em;
+  }
+
+  button {
+  }
+
+  .inline {
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   form {

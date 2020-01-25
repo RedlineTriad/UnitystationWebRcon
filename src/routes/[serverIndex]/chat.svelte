@@ -1,26 +1,34 @@
-<script context="module">
-	export async function preload(page, session) {
-		return { selectedValue: page.params.serverIndex };
-	}
-</script>
-
 <script>
-  import { connections } from "../../stores/connectionStore.js";
-  import { generateWS } from "../../stores/socketStore.js";
-  export let selectedValue;
+	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+    import { chatData, chatSocket } from "../../stores/socketStore.js";
 
-  $: selectedConnection = $connections[selectedValue];
-  $: ws = generateWS(selectedConnection, "rconchat", {
-        timeout: Infinity,
-        maxAttempts: 10,
-        onopen: e => ws.send("chatfull"),
-        onmessage: e => response = e.data
-      });
-  let response;
+	let div;
+	let autoscroll;
+  
+  	onMount(() => {
+    	div.scrollTo(0, div.scrollHeight);
+  	})
+
+	beforeUpdate(() => {
+		autoscroll = div && (div.offsetHeight + div.scrollTop) > (div.scrollHeight - 20);
+	});
+
+	afterUpdate(() => {
+		if (autoscroll) div.scrollTo(0, div.scrollHeight);
+	});
 </script>
 
 <svelte:head>
-  <title>Player List</title>
+  <title>Chat</title>
 </svelte:head>
 
-<pre>{@html response}</pre>
+<pre bind:this={div}>{@html $chatData}</pre>
+
+<style>
+  pre {
+    display: block;
+    box-sizing: border-box;
+    overflow: scroll;
+    height: 70vh;
+  }
+</style>
