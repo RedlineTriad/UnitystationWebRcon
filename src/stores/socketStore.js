@@ -9,6 +9,7 @@ export const generateDefaultWS = (connection, channel, params) =>
   generateWS(connection, channel, { ...{ timeout: Infinity, maxAttempts: 10 }, ...params });
 
 
+
 export const consoleData = writable([]);
 
 export const consoleSocket = derived(selectedConnection, con => {
@@ -19,7 +20,11 @@ export const consoleSocket = derived(selectedConnection, con => {
   });
   return ws;
 });
-if (process.browser) consoleSocket.subscribe(() => {
+
+let oldConsoleSocket;
+if (process.browser) consoleSocket.subscribe(s => {
+  if (oldConsoleSocket) oldConsoleSocket.close();
+  oldConsoleSocket = s;
   consoleData.set([]);
 });
 
@@ -35,7 +40,11 @@ export const chatSocket = derived(selectedConnection, con => {
   });
   return ws;
 });
-if (process.browser) chatSocket.subscribe(() => {
+
+let oldChatSocket;
+if (process.browser) chatSocket.subscribe(s => {
+  if (oldChatSocket) { oldChatSocket.close(); }
+  oldChatSocket = s;
   chatData.set("");
 });
 
@@ -51,7 +60,11 @@ export const playerSocket = derived(selectedConnection, con => {
   });
   return ws;
 });
-if (process.browser) playerSocket.subscribe(() => {
+
+let oldPlayerSocket;
+if (process.browser) playerSocket.subscribe(s => {
+  if (oldPlayerSocket) oldPlayerSocket.close();
+  oldPlayerSocket = s;
   playerData.set([]);
 });
 
@@ -66,6 +79,10 @@ export const rconSocket = derived(selectedConnection, con => {
   });
   return ws;
 });
-if (process.browser) rconSocket.subscribe(() => {
+
+let oldRconSocket;
+if (process.browser) rconSocket.subscribe(s => {
+  if (oldRconSocket) oldRconSocket.close();
+  oldRconSocket = s;
   rconData.set();
 });
