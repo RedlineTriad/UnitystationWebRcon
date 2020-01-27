@@ -1,5 +1,6 @@
 <script>
-  import { playerData } from "../../stores/socketStore.js";
+  import { rconPlayers } from "../../stores/socketStore.js";
+  let value = rconPlayers.value
 </script>
 
 <svelte:head>
@@ -7,7 +8,7 @@
 </svelte:head>
 
 <ul>
-{#each $playerData as player}
+{#each $value as player}
    <li>{player.playerName}</li>
 {/each}
 </ul>

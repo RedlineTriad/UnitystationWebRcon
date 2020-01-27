@@ -1,8 +1,12 @@
 <script>
-  import {rconData} from "../stores/socketStore"
+  import { rconMonitor } from "../stores/socketStore"
   import { stores } from "@sapper/app";
   const { preloading, page, session } = stores();
   export let segment;
+
+  let value = rconMonitor.value;
+
+
   $: match = /(\d+)\/(\w+)/.exec($page.path) || [];
   $: path = match[1] || "";
 </script>
@@ -86,5 +90,5 @@
       </li>
     </ul>
   </nav>
-	<pre>{$rconData}</pre>
+	<pre>{$value}</pre>
 </div>

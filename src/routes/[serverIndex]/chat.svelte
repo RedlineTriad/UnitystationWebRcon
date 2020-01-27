@@ -1,6 +1,7 @@
 <script>
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
-    import { chatData, chatSocket } from "../../stores/socketStore.js";
+	import { rconChat } from "../../stores/socketStore.js";
+	let value = rconChat.value;
 
 	let div;
 	let autoscroll;
@@ -22,7 +23,7 @@
   <title>Chat</title>
 </svelte:head>
 
-<pre bind:this={div}>{@html $chatData}</pre>
+<pre bind:this={div}>{@html $value}</pre>
 
 <style>
   pre {

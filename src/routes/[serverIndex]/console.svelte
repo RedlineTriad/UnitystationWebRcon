@@ -6,12 +6,14 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount } from "svelte";
-  import { consoleData, consoleSocket } from "../../stores/socketStore.js";
+  import { rconConsole } from "../../stores/socketStore.js";
+  let socket = rconConsole.socket;
+  let value = rconConsole.value;
 
   let form;
 
   function submit(event) {
-    $consoleSocket.send("1" + event.target.command.value);
+    $socket.send("1" + event.target.command.value);
     form.reset();
   }
 
@@ -49,7 +51,7 @@
 
 <div class="console">
   <div bind:this={div} class="log">
-    {#each $consoleData as data}
+    {#each $value as data}
       <div>
         {@html data}
       </div>
