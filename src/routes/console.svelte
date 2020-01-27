@@ -6,7 +6,7 @@
 
 <script>
   import { beforeUpdate, afterUpdate, onMount } from "svelte";
-  import { rconConsole } from "../../stores/socketStore.js";
+  import { rconConsole } from "../stores/socketStore.js";
   let socket = rconConsole.socket;
   let value = rconConsole.value;
 
@@ -36,7 +36,7 @@
 
 <style>
   .log {
-    height: 65vh;
+    height: 80vh;
     overflow: auto;
   }
 

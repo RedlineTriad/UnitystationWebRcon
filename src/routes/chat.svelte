@@ -1,6 +1,6 @@
 <script>
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
-	import { rconChat } from "../../stores/socketStore.js";
+	import { rconChat } from "../stores/socketStore.js";
 	let value = rconChat.value;
 
 	let div;

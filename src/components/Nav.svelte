@@ -1,21 +1,62 @@
 <script>
-  import { rconMonitor } from "../stores/socketStore"
-  import { stores } from "@sapper/app";
-  const { preloading, page, session } = stores();
+  import { rconMonitor } from "../stores/socketStore";
   export let segment;
 
   let value = rconMonitor.value;
-
-
-  $: match = /(\d+)\/(\w+)/.exec($page.path) || [];
-  $: path = match[1] || "";
+  let socket = rconMonitor.socket;
 </script>
 
+<div class="header">
+<div class="container">
+  <nav>
+    <ul>
+      <li>
+        <a rel="prefetch" class:selected={segment === undefined} href=".">connect</a>
+      </li>
+        <li>
+          <a
+            rel="prefetch"
+            class:selected={segment === 'players'}
+            class:disabled={!$socket}
+            href="players">
+            players
+          </a>
+        </li>
+        <li>
+          <a 
+            rel="prefetch" 
+            class:selected={segment === 'chat'}
+            class:disabled={!$socket}
+            href="chat">
+            chat
+          </a>
+        </li>
+        <li>
+          <a
+            rel="prefetch"
+            class:selected={segment === 'console'}
+            class:disabled={!$socket}
+            href="console">
+            console
+          </a>
+        </li>
+    </ul>
+  </nav>
+  <pre>{$value}</pre>
+</div>
+</div>
+
 <style>
-  div {
+  .header {
     border-bottom: 2px solid rgba(106, 90, 205, 0.3);
+  }
+
+  .container {
     font-weight: 300;
     padding: 0 0.5em;
+    margin: 0 auto;
+    max-width: 80%;
+    margin: 0 auto;
   }
 
   ul {
@@ -48,47 +89,26 @@
     height: 2px;
     background-color: slateblue;
     display: block;
-    bottom: -1px;
+    bottom: -8px;
   }
 
   a {
     text-decoration: none;
-    padding: 0.5em 0.5em;
+    padding: 0.25em 0.5em;
     display: block;
   }
-</style>
+  
+  a.disabled {
+    pointer-events: none;
+    color: #777;
+  }
 
-<div>
-  <nav>
-    <ul>
-      <li>
-        <a rel="prefetch" href="..">&lt;</a>
-      </li>
-      <li>
-        <a
-          rel="prefetch"
-          class:selected={segment === 'players'}
-          href="{path}/players">
-          players
-        </a>
-      </li>
-      <li>
-        <a
-          rel="prefetch"
-          class:selected={segment === 'chat'}
-          href="{path}/chat">
-          chat
-        </a>
-      </li>
-      <li>
-        <a
-          rel="prefetch"
-          class:selected={segment === 'console'}
-          href="{path}/console">
-          console
-        </a>
-      </li>
-    </ul>
-  </nav>
-	<pre>{$value}</pre>
-</div>
+  nav {
+    display: inline-block;
+  }
+
+  pre {
+    padding: 0.25em 0.5em;
+    float: right;
+  }
+</style>

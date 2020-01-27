@@ -4,7 +4,7 @@
 
   $: selectedConnection = $connections[$selected];
 
-  function submit(event) {
+  function add(event) {
     const newConn = {
       url: event.target.url.value,
       password: event.target.password.value
@@ -12,7 +12,6 @@
     if (!selectedConnection) {
       connections.update(c => [...c, newConn]);
     }
-    goto(`${$selected}/players`);
   }
 
   function deleteSelected(event) {
@@ -26,15 +25,15 @@
 
 <div class="form">
   <h1>Connect</h1>
-  <form on:submit|preventDefault={submit}>
-    <div class="right">
+  <form on:submit|preventDefault={add}>
+    <div class="selection">
       <select id="profile" class="inline" bind:value={$selected}>
         {#each $connections as conn, value}
           <option {value}>{conn.url}</option>
         {/each}
         <option value={$connections.length}>New...</option>
       </select>
-      <button type="button" on:click={deleteSelected} class="inline">X</button>
+      <button type="button" on:click={deleteSelected} class="inline">X </button>
     </div>
     {#if selectedConnection == null}
       <input type="text" id="url" placeholder="address:port" />
@@ -51,7 +50,7 @@
         placeholder="password"
         bind:value={selectedConnection.password} />
     {/if}
-    <input type="submit" value="Connect" />
+    <input type="submit" value="Add" />
   </form>
 </div>
 
@@ -66,11 +65,19 @@
   }
 
   select {
-    width: 50%;
-    margin-left: 8em;
+    width: 80%;
+    margin: 0;
+  }
+
+  .selection {
+    padding: 0;
   }
 
   button {
+    margin: 0;
+    float: right;
+    width: 2.5em;
+    padding: 0.5em;
   }
 
   .inline {
@@ -79,7 +86,7 @@
     align-items: center;
   }
 
-  form {
+  .form {
     width: 25em;
     margin: 0 auto;
   }

@@ -1,5 +1,5 @@
 <script>
-  import { rconPlayers } from "../../stores/socketStore.js";
+  import { rconPlayers } from "../stores/socketStore.js";
   let value = rconPlayers.value
 </script>
 
