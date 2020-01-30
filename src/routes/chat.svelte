@@ -31,5 +31,6 @@
     box-sizing: border-box;
     overflow: scroll;
     height: 70vh;
+	width: 100%;
   }
 </style>

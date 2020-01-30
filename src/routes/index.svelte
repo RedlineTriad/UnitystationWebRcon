@@ -2,20 +2,21 @@
   import { goto } from "@sapper/app";
   import { selected, connections } from "../stores/connectionStore.js";
 
-  $: selectedConnection = $connections[$selected];
+  let newConnection = {url: "", password: ""}
+  $: selectedConnection = $connections[$selected] || newConnection;
 
   function add(event) {
-    const newConn = {
-      url: event.target.url.value,
-      password: event.target.password.value
-    };
-    if (!selectedConnection) {
-      connections.update(c => [...c, newConn]);
+    if (selectedConnection === newConnection) {
+      connections.update(c => [...c, newConnection]);
+      console.log(`Setting selected to: ${$connections.length - 1}`);
+      selected.set($connections.length - 1);
+      newConnection = {url: "", password: ""};
     }
   }
 
   function deleteSelected(event) {
     connections.update(cs => cs.filter(c => c != selectedConnection));
+    selected.set(Math.max(0, $selected - 1))
   }
 </script>
 
@@ -26,33 +27,38 @@
 <div class="form">
   <h1>Connect</h1>
   <form on:submit|preventDefault={add}>
-    <div class="selection">
-      <select id="profile" class="inline" bind:value={$selected}>
+    <div class="selection group">
+      <div>
+      <label for="connection">Connection:</label>
+      </div>
+      <select id="connection" class="inline" bind:value={$selected}>
         {#each $connections as conn, value}
           <option {value}>{conn.url}</option>
         {/each}
-        <option value={$connections.length}>New...</option>
+        <option value="-1">New...</option>
       </select>
-      <button type="button" on:click={deleteSelected} class="inline">X </button>
+      <button type="button" on:click={deleteSelected} class="inline">X</button>
     </div>
-    {#if selectedConnection == null}
-      <input type="text" id="url" placeholder="address:port" />
-      <input type="password" id="password" placeholder="password" />
-    {:else}
+    <div class="group">
+      <label for="url">URL:</label>
       <input
         type="text"
         id="url"
         placeholder="address:port"
         bind:value={selectedConnection.url} />
+    </div>
+    <div class="group">
+      <label for="password">Password:</label>
       <input
         type="password"
         id="password"
         placeholder="password"
         bind:value={selectedConnection.password} />
-    {/if}
+    </div>
     <input type="submit" value="Add" />
   </form>
 </div>
+
 
 <style>
   h1 {
@@ -65,19 +71,19 @@
   }
 
   select {
-    width: 80%;
     margin: 0;
+    width: 85%;
+    box-sizing: border-box;
   }
 
   .selection {
     padding: 0;
+    margin-bottom: 3em;
   }
 
   button {
-    margin: 0;
     float: right;
-    width: 2.5em;
-    padding: 0.5em;
+    height: 100%;
   }
 
   .inline {
@@ -87,7 +93,7 @@
   }
 
   .form {
-    width: 25em;
+    max-width: 25em;
     margin: 0 auto;
   }
 </style>

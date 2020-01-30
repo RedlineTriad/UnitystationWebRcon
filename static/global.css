@@ -27,13 +27,12 @@ option,
 button {
   background: none;
   font-size: 1.25em;
-  padding: 10px 10px 10px 5px;
-  margin: 1em 0;
   display: block;
   border: none;
-  border-bottom: 1px solid slateblue;
   box-sizing: border-box;
   color: inherit;
+  border-bottom: 1px solid slateblue;
+  padding: .5em;
 }
 input:focus {
   outline: 0;
@@ -42,8 +41,20 @@ select:focus {
   outline: 0;
 }
 
-input[type="submit"], button {
+input[type="submit"] {
   border: 1px solid slateblue;
+  padding: 10px 10px 10px 5px;
+  margin: 1em 0;
+}
+
+button {
+	border: 1px solid slateblue;
+	padding: .5em;
+}
+
+form .group {
+	padding: 10px 10px 10px 5px;
+	margin: 1em 0;
 }
 
 @media (min-width: 400px) {

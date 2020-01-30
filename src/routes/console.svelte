@@ -58,6 +58,9 @@
     {/each}
   </div>
   <form bind:this={form} on:submit|preventDefault={submit}>
-    <input type="text" id="command" placeholder="Type command here..." />
+    <div class="group">
+      <label for="command">Command:</label>
+      <input type="text" id="command" placeholder="help" />
+    </div>
   </form>
 </div>
