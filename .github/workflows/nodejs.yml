@@ -34,6 +34,6 @@ jobs:
       uses: crazy-max/ghaction-github-pages@v1.2.5
       with:
         # Build directory to deploy
-        build_dir: __sapper__/export/UnitystationWebRcon
+        build_dir: __sapper__/export/
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
