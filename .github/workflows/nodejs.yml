@@ -26,7 +26,7 @@ jobs:
     - name: npm install and export.
       run: |
         npm ci
-        npx sapper export --basepath /UnitystationWebRcon
+        npx sapper export
       env:
         CI: true
     - name: GitHub Pages
@@ -34,6 +34,6 @@ jobs:
       uses: crazy-max/ghaction-github-pages@v1.2.5
       with:
         # Build directory to deploy
-        build_dir: __sapper__/export/UnitystationWebRcon
+        build_dir: __sapper__/export
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
